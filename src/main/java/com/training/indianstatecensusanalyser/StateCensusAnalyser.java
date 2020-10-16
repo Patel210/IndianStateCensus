@@ -15,6 +15,9 @@ public class StateCensusAnalyser {
 
 	public int loadStateCensusData(String filePath) throws CensusAnalyserException {
 		try (Reader reader = Files.newBufferedReader(Paths.get(filePath));) {
+			if(!(filePath.split("\\.")[1].equals("csv"))) {
+				throw new CensusAnalyserException("Incorrect File Type", ExceptionType.INCORRECT_TYPE);
+			}
 			CsvToBean<CSVStateCensus> csvToBean = new CsvToBeanBuilder<CSVStateCensus>(reader)
 					                                          .withType(CSVStateCensus.class).withIgnoreEmptyLine(true).build();
 			Iterator<CSVStateCensus> iterator = csvToBean.iterator();
