@@ -7,27 +7,27 @@ import java.nio.file.Paths;
 import java.util.Iterator;
 import java.util.stream.StreamSupport;
 
-import com.training.indianstatecensusanalyser.CensusAnalyserException.ExceptionType;
+import com.training.csvbuilder.*;
 
 public class StateCensusAnalyser {
 
-	public int loadStateCensusData(String filePath) throws CensusAnalyserException {
+	public int loadStateCensusData(String filePath) throws CSVException {
 		try (Reader reader = Files.newBufferedReader(Paths.get(filePath));) {
 			ICSVBuilder<CSVStateCensus> csvBuilder = CSVBuilderFactory.createCSVBuilder();
 			Iterator<CSVStateCensus> iterator = csvBuilder.getCSVFileIterator(reader, CSVStateCensus.class, filePath);
 			return getCount(iterator);
 		} catch (IOException e) {
-			throw new CensusAnalyserException("File problem encountered", ExceptionType.FILE_PROBLEM);
+			throw new CSVException("File Problem encountered", CSVException.ExceptionType.FILE_PROBLEM);
 		}
 	}
 
-	public int loadStateCodeData(String filePath) throws CensusAnalyserException {
+	public int loadStateCodeData(String filePath) throws CSVException {
 		try (Reader reader = Files.newBufferedReader(Paths.get(filePath));) {
 			ICSVBuilder<CSVStates> csvBuilder = CSVBuilderFactory.createCSVBuilder();
 			Iterator<CSVStates> iterator = csvBuilder.getCSVFileIterator(reader, CSVStates.class, filePath);
 			return getCount(iterator);
 		} catch (IOException e) {
-			throw new CensusAnalyserException("File problem encountered", ExceptionType.FILE_PROBLEM);
+			throw new CSVException("File problem encountered", CSVException.ExceptionType.FILE_PROBLEM);
 		}
 	}
 	

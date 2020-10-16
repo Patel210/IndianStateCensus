@@ -1,4 +1,4 @@
-package com.training.indianstatecensusanalyser;
+package com.training.csvbuilder;
 
 public class CSVBuilderFactory {
 
