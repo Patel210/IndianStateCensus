@@ -118,4 +118,16 @@ public class StateCensusAnalyserTest {
 			assertEquals(CensusAnalyserException.ExceptionType.INCORRECT_DELIMITER, e.type);
 		}
 	}
+	
+	@Test
+	public void givenCensusFileWithWrongHeaderWhenProcessedForStateCodeShouldThrowAnException() {
+		StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
+		try {
+			ExpectedException exceptionRule = ExpectedException.none();
+			exceptionRule.expect(CensusAnalyserException.class);
+			stateCensusAnalyser.loadStateCodeData(INCORRECT_HEADER_STATE_CENSUS_FILE_PATH);
+		} catch (CensusAnalyserException e) {
+			assertEquals(CensusAnalyserException.ExceptionType.INCORRECT_HEADER, e.type);
+		}
+	}
 }
