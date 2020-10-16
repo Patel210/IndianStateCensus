@@ -82,4 +82,16 @@ public class StateCensusAnalyserTest {
 
 		}
 	}
+	
+	@Test
+	public void givenWrongCensusFilePathWhenProcessedForStateCodeShouldThrowAnException() {
+		StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
+		try {
+			ExpectedException exceptionRule = ExpectedException.none();
+			exceptionRule.expect(CensusAnalyserException.class);
+			stateCensusAnalyser.loadStateCodeData(INCORRECT_STATE_CENSUS_FILE_PATH);
+		} catch (CensusAnalyserException e) {
+			assertEquals(CensusAnalyserException.ExceptionType.FILE_PROBLEM, e.type);
+		}
+	}
 }
