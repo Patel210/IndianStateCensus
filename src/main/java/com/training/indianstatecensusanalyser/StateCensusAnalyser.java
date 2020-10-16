@@ -24,6 +24,10 @@ public class StateCensusAnalyser {
 			if (headerColumns.length < 5) {
 				throw new CensusAnalyserException("File contains Invalid Delimiter", ExceptionType.INCORRECT_DELIMITER);
 			}
+			if (!headerColumns[1].equals("State Name") || !headerColumns[2].equals("TIN")
+					|| !headerColumns[3].equals("Population") || !headerColumns[4].equals("State Code")) {
+				throw new CensusAnalyserException("Incorrect Header", ExceptionType.INCORRECT_HEADER);
+			}
 			bufferedReader.close();
 			CsvToBean<CSVStateCensus> csvToBean = new CsvToBeanBuilder<CSVStateCensus>(reader)
 					                                          .withType(CSVStateCensus.class).withIgnoreEmptyLine(true).build();
