@@ -40,4 +40,30 @@ public class StateCensusAnalyser {
 			throw new CensusAnalyserException("File problem encountered", ExceptionType.FILE_PROBLEM);
 		}
 	}
+	
+	public int loadStateCodeData(String filePath) throws CensusAnalyserException {
+		try (Reader reader = Files.newBufferedReader(Paths.get(filePath));) {
+			if (!(filePath.split("\\.")[1].equals("csv"))) {
+				throw new CensusAnalyserException("Incorrect File Type", ExceptionType.INCORRECT_TYPE);
+			}
+			BufferedReader bufferedReader = Files.newBufferedReader(Paths.get(filePath));
+			String[] headerColumns = bufferedReader.readLine().split(",");
+			if (headerColumns.length < 5) {
+				throw new CensusAnalyserException("File contains Invalid Delimiter", ExceptionType.INCORRECT_DELIMITER);
+			}
+			if (!headerColumns[1].equals("State Name") || !headerColumns[4].equals("State Code")) {
+				throw new CensusAnalyserException("Incorrect Header", ExceptionType.INCORRECT_HEADER);
+			}
+			bufferedReader.close();
+			CsvToBean<CSVStates> csvToBean = new CsvToBeanBuilder<CSVStates>(reader)
+					                                          .withType(CSVStates.class).withIgnoreEmptyLine(true).build();
+			Iterator<CSVStates> iterator = csvToBean.iterator();
+			Iterable<CSVStates> csvIterable = () -> iterator;
+			return (int) StreamSupport.stream(csvIterable.spliterator(), false).count();
+		} catch (IllegalStateException e) {
+			throw new CensusAnalyserException(e.getMessage(), ExceptionType.UNABLE_TO_PARSE);
+		} catch (IOException e) {
+			throw new CensusAnalyserException(e.getMessage(), ExceptionType.FILE_PROBLEM);
+		}
+	}
 }
