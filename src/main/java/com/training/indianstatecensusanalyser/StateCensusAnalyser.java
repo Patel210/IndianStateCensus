@@ -17,8 +17,7 @@ public class StateCensusAnalyser {
 	public int loadStateCensusData(String filePath) throws CensusAnalyserException {
 		try (Reader reader = Files.newBufferedReader(Paths.get(filePath));) {
 			Iterator<CSVStateCensus> iterator = getCSVFileIterator(reader, CSVStateCensus.class, filePath);
-			Iterable<CSVStateCensus> csvIterable = () -> iterator;
-			return (int) StreamSupport.stream(csvIterable.spliterator(), false).count();
+			return getCount(iterator);
 		} catch (IOException e) {
 			throw new CensusAnalyserException("File problem encountered", ExceptionType.FILE_PROBLEM);
 		}
@@ -27,8 +26,7 @@ public class StateCensusAnalyser {
 	public int loadStateCodeData(String filePath) throws CensusAnalyserException {
 		try (Reader reader = Files.newBufferedReader(Paths.get(filePath));) {
 			Iterator<CSVStates> iterator = getCSVFileIterator(reader, CSVStates.class, filePath);
-			Iterable<CSVStates> csvIterable = () -> iterator;
-			return (int) StreamSupport.stream(csvIterable.spliterator(), false).count();
+			return getCount(iterator);
 		} catch (IOException e) {
 			throw new CensusAnalyserException("File problem encountered", ExceptionType.FILE_PROBLEM);
 		}
@@ -77,5 +75,10 @@ public class StateCensusAnalyser {
 			throw new CensusAnalyserException("File Problem Occured", ExceptionType.FILE_PROBLEM);
 		}
 		return true;
+	}
+	
+	private <E> int getCount(Iterator<E> iterator) {
+		Iterable<E> csvIterable = () -> iterator;
+		return (int) StreamSupport.stream(csvIterable.spliterator(), false).count();
 	}
 }
