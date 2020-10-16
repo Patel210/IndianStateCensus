@@ -1,4 +1,5 @@
 package com.training.indianstatecensusanalyser;
+
 import static org.junit.Assert.*;
 
 import org.junit.Test;
@@ -8,6 +9,7 @@ public class StateCensusAnalyserTest {
 
 	private static final String STATE_CENSUS_FILE_PATH = "C:\\Users\\Pranav\\eclipse-workspace\\IndianStateCensusAnalyser\\src\\test\\resources\\IndianStateCensusData.csv";
 	private static final String INCORRECT_STATE_CENSUS_FILE_PATH = "C:\\Users\\Pranav\\eclipse-workspace\\IndianStateCensusAnaylser\\src\\main\\resources\\IndianStateCensusData.csv";
+	private static final String INCORRECT_TYPE_STATE_CENSUS_FILE_PATH = "C:\\Users\\Pranav\\eclipse-workspace\\IndianStateCensusAnalyser\\src\\test\\resources\\IndianStateCensusDataWithIncorrectType.txt";
 
 	@Test
 	public void givenCensusFileShouldReturnCorrectNumberOfEnteries() {
@@ -19,7 +21,7 @@ public class StateCensusAnalyserTest {
 
 		}
 	}
-	
+
 	@Test
 	public void givenWrongFilePathShouldThrowAnException() {
 		StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
@@ -29,6 +31,18 @@ public class StateCensusAnalyserTest {
 			stateCensusAnalyser.loadStateCensusData(INCORRECT_STATE_CENSUS_FILE_PATH);
 		} catch (CensusAnalyserException e) {
 			assertEquals(CensusAnalyserException.ExceptionType.FILE_PROBLEM, e.type);
+		}
+	}
+
+	@Test
+	public void givenWrongFileTypeWhenProcessedShouldThrowAnException() {
+		StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
+		try {
+			ExpectedException exceptionRule = ExpectedException.none();
+			exceptionRule.expect(CensusAnalyserException.class);
+			stateCensusAnalyser.loadStateCensusData(INCORRECT_TYPE_STATE_CENSUS_FILE_PATH);
+		} catch (CensusAnalyserException e) {
+			assertEquals(CensusAnalyserException.ExceptionType.INCORRECT_TYPE, e.type);
 		}
 	}
 }
