@@ -71,4 +71,15 @@ public class StateCensusAnalyserTest {
 			assertEquals(CensusAnalyserException.ExceptionType.INCORRECT_HEADER, e.type);
 		}
 	}
+	
+	@Test
+	public void givenStateCensusFileWhenProcessedForStateCodeShouldReturnCorrectNumberOfEnteries() {
+		StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
+		try {
+			int entries = stateCensusAnalyser.loadStateCodeData(STATE_CENSUS_FILE_PATH);
+			assertEquals(36, entries);
+		} catch (CensusAnalyserException e) {
+
+		}
+	}
 }
