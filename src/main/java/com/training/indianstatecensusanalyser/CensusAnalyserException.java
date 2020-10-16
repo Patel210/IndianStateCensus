@@ -4,7 +4,7 @@ public class CensusAnalyserException extends Exception {
 	ExceptionType type;
 
 	enum ExceptionType {
-		FILE_PROBLEM, UNABLE_TO_PARSE, INCORRECT_TYPE;
+		FILE_PROBLEM, UNABLE_TO_PARSE, INCORRECT_TYPE, INCORRECT_DELIMITER;
 	}
 
 	public CensusAnalyserException(String message, ExceptionType exceptionType) {
