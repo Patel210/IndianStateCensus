@@ -106,4 +106,16 @@ public class StateCensusAnalyserTest {
 			assertEquals(CensusAnalyserException.ExceptionType.INCORRECT_TYPE, e.type);
 		}
 	}
+	
+	@Test
+	public void givenCensusFileWithWrongDelimiterWhenProcessedForStateCodeShouldThrowAnException() {
+		StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
+		try {
+			ExpectedException exceptionRule = ExpectedException.none();
+			exceptionRule.expect(CensusAnalyserException.class);
+			stateCensusAnalyser.loadStateCodeData(INCORRECT_DELIMITER_STATE_CENSUS_FILE_PATH);
+		} catch (CensusAnalyserException e) {
+			assertEquals(CensusAnalyserException.ExceptionType.INCORRECT_DELIMITER, e.type);
+		}
+	}
 }
