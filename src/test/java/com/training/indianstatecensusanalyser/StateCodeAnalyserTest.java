@@ -1,12 +1,12 @@
 package com.training.indianstatecensusanalyser;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertEquals; 
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import com.training.csvbuilder.CSVException;
+import opencsvbuilder.CSVException;
 
 public class StateCodeAnalyserTest {
 	private static final String STATE_CENSUS_FILE_PATH = "C:\\Users\\Pranav\\eclipse-workspace\\IndianStateCensusAnalyser\\src\\test\\resources\\IndianStateCensusData.csv";

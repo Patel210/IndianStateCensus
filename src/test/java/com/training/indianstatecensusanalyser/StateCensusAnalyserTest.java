@@ -1,12 +1,12 @@
 package com.training.indianstatecensusanalyser;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.*;  
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import com.training.csvbuilder.*;
+import opencsvbuilder.CSVException;
 
 public class StateCensusAnalyserTest {
 
