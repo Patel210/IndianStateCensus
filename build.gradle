@@ -29,4 +29,6 @@ dependencies {
     
     // https://mvnrepository.com/artifact/com.opencsv/opencsv
 	compile group: 'com.opencsv', name: 'opencsv', version: '5.2'
+	
+	compile fileTree(dir: 'lib', include: ['openCSVBuilder.jar']) 
 }
