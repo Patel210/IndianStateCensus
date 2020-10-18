@@ -74,7 +74,7 @@ public class StateCensusAnalyserTest {
 	}
 	
 	@Test
-	public void givenCensusFileWhenSortedStateWiseShouldReturnTheSortedList() {
+	public void givenCensusFileWhenSortedStateWiseShouldReturnTheSortedJSONString() {
 		try {
 			stateCensusAnalyser.loadStateCensusData(STATE_CENSUS_FILE_PATH);
 			String stateWiseSortedString = stateCensusAnalyser.getStateWiseSortedData();
@@ -88,7 +88,7 @@ public class StateCensusAnalyserTest {
 	}
 	
 	@Test
-	public void givenCensusFileWhenSortedStateCodeWiseShouldReturnTheSortedList() {
+	public void givenCensusFileWhenSortedStateCodeWiseShouldReturnTheSortedJSONString() {
 		try {
 			stateCensusAnalyser.loadStateCensusData(STATE_CENSUS_FILE_PATH);
 			String stateWiseSortedString = stateCensusAnalyser.getStateCodeWiseSortedData();
@@ -107,5 +107,18 @@ public class StateCensusAnalyserTest {
 		} catch(CensusAnalyserException e) {
 			assertEquals(CensusAnalyserException.ExceptionType.NO_DATA_FOUND, e.type);
 		}
+	}
+	
+	@Test
+	public void givenCensusFileWhenLoadedAndSortedBasedOnPopulationInDecendingOrderShouldReturnTheSortedJSONString() {
+		try {
+			stateCensusAnalyser.loadStateCensusData(STATE_CENSUS_FILE_PATH);
+			String stateWiseSortedString = stateCensusAnalyser.getPopulationWiseSortedDataInDecendingOrder();
+			CSVStateCensus[] censusArray = new Gson().fromJson(stateWiseSortedString, CSVStateCensus[].class);
+			int size = censusArray.length;
+			assertEquals("Uttar Pradesh", censusArray[0].getState());
+			assertEquals("Lakshadweep", censusArray[size-1].getState());
+		} catch (CSVException | CensusAnalyserException e) {}
+		
 	}
 }
