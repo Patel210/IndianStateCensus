@@ -74,30 +74,38 @@ public class StateCensusAnalyserTest {
 	}
 	
 	@Test
-	public void givenCensusFileWhenSortedShouldReturnTheSortedList() {
+	public void givenCensusFileWhenSortedStateWiseShouldReturnTheSortedList() {
 		try {
-			String stateWiseSortedString = stateCensusAnalyser.getSortedDataStateWise(STATE_CENSUS_FILE_PATH);
+			stateCensusAnalyser.loadStateCensusData(STATE_CENSUS_FILE_PATH);
+			String stateWiseSortedString = stateCensusAnalyser.getStateWiseSortedData();
 			CSVStateCensus[] censusArray = new Gson().fromJson(stateWiseSortedString, CSVStateCensus[].class);
 			int size = censusArray.length;
 			assertEquals("Andaman and Nicobar Islands", censusArray[0].getState());
 			assertEquals("West Bengal", censusArray[size-1].getState());
-		} catch (CSVException e) {
-			
-		}
+		} 
+		catch(CSVException | CensusAnalyserException e) {} 
 		
 	}
 	
 	@Test
 	public void givenCensusFileWhenSortedStateCodeWiseShouldReturnTheSortedList() {
 		try {
-			String stateWiseSortedString = stateCensusAnalyser.getSortedDataStateCodeWise(STATE_CENSUS_FILE_PATH);
+			stateCensusAnalyser.loadStateCensusData(STATE_CENSUS_FILE_PATH);
+			String stateWiseSortedString = stateCensusAnalyser.getStateCodeWiseSortedData();
 			CSVStateCensus[] censusArray = new Gson().fromJson(stateWiseSortedString, CSVStateCensus[].class);
 			int size = censusArray.length;
 			assertEquals("AN", censusArray[0].getCode());
 			assertEquals("WB", censusArray[size-1].getCode());
-		} catch (CSVException e) {
-			
+		} catch (CSVException | CensusAnalyserException e) {}
+	}
+	
+	@Test
+	public void givenCensusFileWhenSortedWithoutLoadingShouldThrowAnException() {
+		try {
+		String stateWiseSortedString = stateCensusAnalyser.getStateCodeWiseSortedData();
+		CSVStateCensus[] censusArray = new Gson().fromJson(stateWiseSortedString, CSVStateCensus[].class);
+		} catch(CensusAnalyserException e) {
+			assertEquals(CensusAnalyserException.ExceptionType.NO_DATA_FOUND, e.type);
 		}
-		
 	}
 }
