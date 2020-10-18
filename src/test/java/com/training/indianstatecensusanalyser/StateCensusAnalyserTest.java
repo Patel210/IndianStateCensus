@@ -84,7 +84,16 @@ public class StateCensusAnalyserTest {
 			assertEquals("West Bengal", censusArray[size-1].getState());
 		} 
 		catch(CSVException | CensusAnalyserException e) {} 
-		
+	}
+	
+	@Test
+	public void givenCensusFileWhenSortedStateWiseWithoutLoadingShouldThrowAnException() {
+		try {
+		String sortedString = stateCensusAnalyser.getStateWiseSortedData();
+		CSVStateCensus[] censusArray = new Gson().fromJson(sortedString, CSVStateCensus[].class);
+		} catch(CensusAnalyserException e) {
+			assertEquals(CensusAnalyserException.ExceptionType.NO_DATA_FOUND, e.type);
+		}
 	}
 	
 	@Test
@@ -100,10 +109,10 @@ public class StateCensusAnalyserTest {
 	}
 	
 	@Test
-	public void givenCensusFileWhenSortedWithoutLoadingShouldThrowAnException() {
+	public void givenCensusFileWhenSortedStateCodeWiseWithoutLoadingShouldThrowAnException() {
 		try {
-		String stateWiseSortedString = stateCensusAnalyser.getStateCodeWiseSortedData();
-		CSVStateCensus[] censusArray = new Gson().fromJson(stateWiseSortedString, CSVStateCensus[].class);
+		String sortedString = stateCensusAnalyser.getStateCodeWiseSortedData();
+		CSVStateCensus[] censusArray = new Gson().fromJson(sortedString, CSVStateCensus[].class);
 		} catch(CensusAnalyserException e) {
 			assertEquals(CensusAnalyserException.ExceptionType.NO_DATA_FOUND, e.type);
 		}
@@ -113,8 +122,8 @@ public class StateCensusAnalyserTest {
 	public void givenCensusFileWhenLoadedAndSortedBasedOnPopulationInDecendingOrderShouldReturnTheSortedJSONString() {
 		try {
 			stateCensusAnalyser.loadStateCensusData(STATE_CENSUS_FILE_PATH);
-			String stateWiseSortedString = stateCensusAnalyser.getPopulationWiseSortedDataInDecendingOrder();
-			CSVStateCensus[] censusArray = new Gson().fromJson(stateWiseSortedString, CSVStateCensus[].class);
+			String sortedString = stateCensusAnalyser.getPopulationWiseSortedDataInDecendingOrder();
+			CSVStateCensus[] censusArray = new Gson().fromJson(sortedString, CSVStateCensus[].class);
 			int size = censusArray.length;
 			assertEquals("Uttar Pradesh", censusArray[0].getState());
 			assertEquals("Lakshadweep", censusArray[size-1].getState());
@@ -122,14 +131,56 @@ public class StateCensusAnalyserTest {
 	}
 	
 	@Test
+	public void givenCensusFileWhenSortedPopulationWiseWithoutLoadingShouldThrowAnException() {
+		try {
+		String sortedString = stateCensusAnalyser.getPopulationWiseSortedDataInDecendingOrder();
+		CSVStateCensus[] censusArray = new Gson().fromJson(sortedString, CSVStateCensus[].class);
+		} catch(CensusAnalyserException e) {
+			assertEquals(CensusAnalyserException.ExceptionType.NO_DATA_FOUND, e.type);
+		}
+	}
+	
+	@Test
 	public void givenCensusFileWhenLoadedAndSortedBasedOnPopulationDensityInDecendingOrderShouldReturnTheSortedJSONString() {
 		try {
 			stateCensusAnalyser.loadStateCensusData(STATE_CENSUS_FILE_PATH);
-			String stateWiseSortedString = stateCensusAnalyser.getPopulationDensityWiseSortedDataInDecendingOrder();
-			CSVStateCensus[] censusArray = new Gson().fromJson(stateWiseSortedString, CSVStateCensus[].class);
+			String sortedString = stateCensusAnalyser.getPopulationDensityWiseSortedDataInDecendingOrder();
+			CSVStateCensus[] censusArray = new Gson().fromJson(sortedString, CSVStateCensus[].class);
 			int size = censusArray.length;
 			assertEquals("Delhi", censusArray[0].getState());
 			assertEquals("Ladakh", censusArray[size-1].getState());
 		} catch (CSVException | CensusAnalyserException e) {}
+	}
+	
+	@Test
+	public void givenCensusFileWhenSortedPopulationDensityWiseWithoutLoadingShouldThrowAnException() {
+		try {
+		String sortedString = stateCensusAnalyser.getPopulationDensityWiseSortedDataInDecendingOrder();
+		CSVStateCensus[] censusArray = new Gson().fromJson(sortedString, CSVStateCensus[].class);
+		} catch(CensusAnalyserException e) {
+			assertEquals(CensusAnalyserException.ExceptionType.NO_DATA_FOUND, e.type);
+		}
+	}
+	
+	@Test
+	public void givenCensusFileWhenLoadedAndSortedBasedOnAreaInDecendingOrderShouldReturnTheSortedJSONString() {
+		try {
+			stateCensusAnalyser.loadStateCensusData(STATE_CENSUS_FILE_PATH);
+			String sortedString = stateCensusAnalyser.getAreaWiseSortedDataInDecendingOrder();
+			CSVStateCensus[] censusArray = new Gson().fromJson(sortedString, CSVStateCensus[].class);
+			int size = censusArray.length;
+			assertEquals("Rajasthan", censusArray[0].getState());
+			assertEquals("Lakshadweep", censusArray[size-1].getState());
+		} catch (CSVException | CensusAnalyserException e) {}
+	}
+	
+	@Test
+	public void givenCensusFileWhenSortedAreaWiseWithoutLoadingShouldThrowAnException() {
+		try {
+		String sortedString = stateCensusAnalyser.getAreaWiseSortedDataInDecendingOrder();
+		CSVStateCensus[] censusArray = new Gson().fromJson(sortedString, CSVStateCensus[].class);
+		} catch(CensusAnalyserException e) {
+			assertEquals(CensusAnalyserException.ExceptionType.NO_DATA_FOUND, e.type);
+		}
 	}
 }
