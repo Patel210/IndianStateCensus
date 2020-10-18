@@ -35,11 +35,26 @@ public class StateCensusAnalyser {
 	}
 
 	public String getSortedDataStateWise(String filePath) throws CSVException {
-		List<CSVStateCensus> stateCensusList = getList(filePath, CSVStateCensus.class);
 		Comparator<CSVStateCensus> comparator = Comparator.comparing(csvStateCensus -> csvStateCensus.getState());
-		stateCensusList.sort(comparator);
+		List<CSVStateCensus> sortedCensusList = getSortedCensusList(filePath, CSVStateCensus.class, comparator);
+		return getListAsJsonString(sortedCensusList);
+	}
+	
+	private String getListAsJsonString(List list) {
 		Gson gson = new Gson();
-		String sortedCensusJsonString = gson.toJson(stateCensusList);
+		String sortedCensusJsonString = gson.toJson(list);
 		return sortedCensusJsonString;
+	}
+	
+	public String getSortedDataStateCodeWise(String filePath) throws CSVException {
+		Comparator<CSVStateCensus> comparator = Comparator.comparing(csvStateCensus -> csvStateCensus.getCode());
+		List<CSVStateCensus> sortedCensusList = getSortedCensusList(filePath, CSVStateCensus.class, comparator);
+		return getListAsJsonString(sortedCensusList);
+	}
+	
+	private <E> List<E> getSortedCensusList(String filePath, Class csvClass, Comparator<E> comparator) throws CSVException{
+		List<E> list = getList(filePath, csvClass);
+		list.sort(comparator);
+		return list;
 	}
 }
