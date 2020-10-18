@@ -4,10 +4,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Comparator;
 import java.util.List;
-
-import com.google.gson.Gson;
 
 import opencsvbuilder.CSVBuilderFactory;
 import opencsvbuilder.CSVException;
@@ -38,37 +35,28 @@ public class StateCensusAnalyser {
 	}
 
 	public String getStateWiseSortedData() throws CensusAnalyserException {
-		if(censusDataList == null || censusDataList.size() == 0) {
-			throw new CensusAnalyserException("Census Data Not Found", CensusAnalyserException.ExceptionType.NO_DATA_FOUND);
-		}
-		Comparator<CSVStateCensus> comparator = Comparator.comparing(csvStateCensus -> csvStateCensus.getState());
-		censusDataList.sort(comparator);
-		return getListAsJsonString(censusDataList);
+		new CensusDataSortingUtility().sortDataStateWise(censusDataList);
+		CensusAnalyserJsonIOService jsonIOService = new CensusAnalyserJsonIOService();
+		return jsonIOService.createJsonString(censusDataList);
 	}
 	
 	public String getStateCodeWiseSortedData() throws CensusAnalyserException {
-		if(censusDataList == null || censusDataList.size() == 0) {
-			throw new CensusAnalyserException("Census Data Not Found", CensusAnalyserException.ExceptionType.NO_DATA_FOUND);
-		}
-		Comparator<CSVStateCensus> comparator = Comparator.comparing(csvStateCensus -> csvStateCensus.getCode());
-		censusDataList.sort(comparator);
-		return getListAsJsonString(censusDataList);
+		new CensusDataSortingUtility().sortDataStateCodeWise(censusDataList);
+		CensusAnalyserJsonIOService jsonIOService = new CensusAnalyserJsonIOService();
+		return jsonIOService.createJsonString(censusDataList);
 	}
 	
 	public String getPopulationWiseSortedDataInDecendingOrder() throws CensusAnalyserException {
-		if(censusDataList == null || censusDataList.size() == 0) {
-			throw new CensusAnalyserException("Census Data Not Found", CensusAnalyserException.ExceptionType.NO_DATA_FOUND);
-		}
-		Comparator<CSVStateCensus> comparator = Comparator.comparing(csvStateCensus -> csvStateCensus.getPopulation());
-		censusDataList.sort(comparator.reversed());
-		String sortedCensusJsonString = getListAsJsonString(censusDataList);
-		new CensusAnalyserFileIOService().writeJSONFile("PopulationWiseSortedData", sortedCensusJsonString);
-		return sortedCensusJsonString;
+		new CensusDataSortingUtility().sortDataPopulationWiseInDecendingOrder(censusDataList);
+		CensusAnalyserJsonIOService jsonIOService = new CensusAnalyserJsonIOService();
+		jsonIOService.writeJSONFile("PopulationWiseSortedData", censusDataList);
+		return jsonIOService.createJsonString(censusDataList);
 	}
 	
-	private <E> String getListAsJsonString(List<E> list) {
-		Gson gson = new Gson();
-		String sortedCensusJsonString = gson.toJson(list);
-		return sortedCensusJsonString; 
+	public String getPopulationDensityWiseSortedDataInDecendingOrder() throws CensusAnalyserException {
+		new CensusDataSortingUtility().sortDataPopulationDensityWiseInDecendingOrder(censusDataList);
+		CensusAnalyserJsonIOService jsonIOService = new CensusAnalyserJsonIOService();
+		jsonIOService.writeJSONFile("PopulationDensityWiseSortedData", censusDataList);
+		return jsonIOService.createJsonString(censusDataList);
 	}
 }
