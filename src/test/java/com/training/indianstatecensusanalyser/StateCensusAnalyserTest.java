@@ -36,20 +36,6 @@ public class StateCensusAnalyserTest {
 		} catch (CSVException e) {
 		}
 	}
-	
-	@Test
-	public void givenCensusFileWhenSortedShouldReturnTheSortedList() {
-		try {
-			String stateWiseSortedString = stateCensusAnalyser.getSortedDataStateWise(STATE_CENSUS_FILE_PATH);
-			CSVStateCensus[] censusArray = new Gson().fromJson(stateWiseSortedString, CSVStateCensus[].class);
-			int size = censusArray.length;
-			assertEquals("Andaman and Nicobar Islands", censusArray[0].getState());
-			assertEquals("West Bengal", censusArray[size-1].getState());
-		} catch (CSVException e) {
-			
-		}
-		
-	}
 
 	@Test
 	public void givenWrongFilePathShouldThrowAnException() {
@@ -85,5 +71,33 @@ public class StateCensusAnalyserTest {
 		} catch (CSVException e) {
 			assertEquals(CSVException.ExceptionType.INCORRECT_HEADER, e.type);
 		}
+	}
+	
+	@Test
+	public void givenCensusFileWhenSortedShouldReturnTheSortedList() {
+		try {
+			String stateWiseSortedString = stateCensusAnalyser.getSortedDataStateWise(STATE_CENSUS_FILE_PATH);
+			CSVStateCensus[] censusArray = new Gson().fromJson(stateWiseSortedString, CSVStateCensus[].class);
+			int size = censusArray.length;
+			assertEquals("Andaman and Nicobar Islands", censusArray[0].getState());
+			assertEquals("West Bengal", censusArray[size-1].getState());
+		} catch (CSVException e) {
+			
+		}
+		
+	}
+	
+	@Test
+	public void givenCensusFileWhenSortedStateCodeWiseShouldReturnTheSortedList() {
+		try {
+			String stateWiseSortedString = stateCensusAnalyser.getSortedDataStateCodeWise(STATE_CENSUS_FILE_PATH);
+			CSVStateCensus[] censusArray = new Gson().fromJson(stateWiseSortedString, CSVStateCensus[].class);
+			int size = censusArray.length;
+			assertEquals("AN", censusArray[0].getCode());
+			assertEquals("WB", censusArray[size-1].getCode());
+		} catch (CSVException e) {
+			
+		}
+		
 	}
 }
