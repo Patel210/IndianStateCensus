@@ -13,9 +13,11 @@ public class CSVStateCensus {
 	@CsvBindByName(column = "TIN", required = true)
 	private int tinNumber;
 
-	@Override
-	public String toString() {
-		return "CSVStateCensus [state=" + state + ", code=" + code + ", population=" + population + ", tinNumber="
-				+ tinNumber + "]";
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
 	}
 }
