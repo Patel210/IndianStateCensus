@@ -14,18 +14,21 @@ import opencsvbuilder.CSVException;
 import opencsvbuilder.ICSVBuilder;
 
 public class StateCensusAnalyser {
-
+	
+	List<CSVStateCensus> censusDataList = null;
+	List<CSVStates> stateDataList =  null;
+	
 	public int loadStateCensusData(String filePath) throws CSVException {
-		List<CSVStateCensus> stateCensusList = getList(filePath, CSVStateCensus.class);
-		return stateCensusList.size();
+		censusDataList = getCSVList(filePath, CSVStateCensus.class);
+		return censusDataList.size();
 	}
 
 	public int loadStateCodeData(String filePath) throws CSVException {
-		List<CSVStates> stateCensusList = getList(filePath, CSVStates.class);
-		return stateCensusList.size();
+		stateDataList = getCSVList(filePath, CSVStates.class);
+		return stateDataList.size();
 	}
 	 
-	private <E> List<E> getList(String filePath, Class csvClass) throws CSVException{
+	private <E> List<E> getCSVList(String filePath, Class csvClass) throws CSVException{
 		try (Reader reader = Files.newBufferedReader(Paths.get(filePath));) {
 			ICSVBuilder<E> csvBuilder = CSVBuilderFactory.createCSVBuilder();
 			return (List<E>) csvBuilder.getCSVFileList(reader, csvClass, filePath);
@@ -34,27 +37,27 @@ public class StateCensusAnalyser {
 		}
 	}
 
-	public String getSortedDataStateWise(String filePath) throws CSVException {
+	public String getStateWiseSortedData() throws CensusAnalyserException {
+		if(censusDataList == null || censusDataList.size() == 0) {
+			throw new CensusAnalyserException("Census Data Not Found", CensusAnalyserException.ExceptionType.NO_DATA_FOUND);
+		}
 		Comparator<CSVStateCensus> comparator = Comparator.comparing(csvStateCensus -> csvStateCensus.getState());
-		List<CSVStateCensus> sortedCensusList = getSortedCensusList(filePath, CSVStateCensus.class, comparator);
-		return getListAsJsonString(sortedCensusList);
+		censusDataList.sort(comparator);
+		return getListAsJsonString(censusDataList);
+	}
+	
+	public String getStateCodeWiseSortedData() throws CensusAnalyserException {
+		if(censusDataList == null || censusDataList.size() == 0) {
+			throw new CensusAnalyserException("Census Data Not Found", CensusAnalyserException.ExceptionType.NO_DATA_FOUND);
+		}
+		Comparator<CSVStateCensus> comparator = Comparator.comparing(csvStateCensus -> csvStateCensus.getCode());
+		censusDataList.sort(comparator);
+		return getListAsJsonString(censusDataList);
 	}
 	
 	private String getListAsJsonString(List list) {
 		Gson gson = new Gson();
 		String sortedCensusJsonString = gson.toJson(list);
 		return sortedCensusJsonString;
-	}
-	
-	public String getSortedDataStateCodeWise(String filePath) throws CSVException {
-		Comparator<CSVStateCensus> comparator = Comparator.comparing(csvStateCensus -> csvStateCensus.getCode());
-		List<CSVStateCensus> sortedCensusList = getSortedCensusList(filePath, CSVStateCensus.class, comparator);
-		return getListAsJsonString(sortedCensusList);
-	}
-	
-	private <E> List<E> getSortedCensusList(String filePath, Class csvClass, Comparator<E> comparator) throws CSVException{
-		List<E> list = getList(filePath, csvClass);
-		list.sort(comparator);
-		return list;
 	}
 }
