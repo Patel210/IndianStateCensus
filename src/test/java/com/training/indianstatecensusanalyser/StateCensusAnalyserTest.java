@@ -1,11 +1,13 @@
 package com.training.indianstatecensusanalyser;
 
-import static org.junit.Assert.*;  
+import static org.junit.Assert.*; 
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import com.google.gson.Gson;
+ 
 import opencsvbuilder.CSVException;
 
 public class StateCensusAnalyserTest {
@@ -25,7 +27,7 @@ public class StateCensusAnalyserTest {
 		exceptionRule.expect(CSVException.class);
 	}
 	
-	
+	 
 	@Test
 	public void givenCensusFileShouldReturnCorrectNumberOfEnteries() {
 		try {
@@ -33,6 +35,20 @@ public class StateCensusAnalyserTest {
 			assertEquals(36, entries);
 		} catch (CSVException e) {
 		}
+	}
+	
+	@Test
+	public void givenCensusFileWhenSortedShouldReturnTheSortedList() {
+		try {
+			String stateWiseSortedString = stateCensusAnalyser.getSortedDataStateWise(STATE_CENSUS_FILE_PATH);
+			CSVStateCensus[] censusArray = new Gson().fromJson(stateWiseSortedString, CSVStateCensus[].class);
+			int size = censusArray.length;
+			assertEquals("Andaman and Nicobar Islands", censusArray[0].getState());
+			assertEquals("West Bengal", censusArray[size-1].getState());
+		} catch (CSVException e) {
+			
+		}
+		
 	}
 
 	@Test
