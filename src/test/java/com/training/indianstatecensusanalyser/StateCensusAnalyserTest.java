@@ -119,6 +119,17 @@ public class StateCensusAnalyserTest {
 			assertEquals("Uttar Pradesh", censusArray[0].getState());
 			assertEquals("Lakshadweep", censusArray[size-1].getState());
 		} catch (CSVException | CensusAnalyserException e) {}
-		
+	}
+	
+	@Test
+	public void givenCensusFileWhenLoadedAndSortedBasedOnPopulationDensityInDecendingOrderShouldReturnTheSortedJSONString() {
+		try {
+			stateCensusAnalyser.loadStateCensusData(STATE_CENSUS_FILE_PATH);
+			String stateWiseSortedString = stateCensusAnalyser.getPopulationDensityWiseSortedDataInDecendingOrder();
+			CSVStateCensus[] censusArray = new Gson().fromJson(stateWiseSortedString, CSVStateCensus[].class);
+			int size = censusArray.length;
+			assertEquals("Delhi", censusArray[0].getState());
+			assertEquals("Ladakh", censusArray[size-1].getState());
+		} catch (CSVException | CensusAnalyserException e) {}
 	}
 }
