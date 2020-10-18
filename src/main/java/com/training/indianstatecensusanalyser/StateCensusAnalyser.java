@@ -59,4 +59,11 @@ public class StateCensusAnalyser {
 		jsonIOService.writeJSONFile("PopulationDensityWiseSortedData", censusDataList);
 		return jsonIOService.createJsonString(censusDataList);
 	}
+
+	public String getAreaWiseSortedDataInDecendingOrder() throws CensusAnalyserException {
+		new CensusDataSortingUtility().sortDataAreaWiseInDecendingOrder(censusDataList);
+		CensusAnalyserJsonIOService jsonIOService = new CensusAnalyserJsonIOService();
+		jsonIOService.writeJSONFile("AreaWiseSortedData", censusDataList);
+		return jsonIOService.createJsonString(censusDataList);
+	}
 }

@@ -39,7 +39,17 @@ public class CensusDataSortingUtility {
 											  CensusAnalyserException.ExceptionType.NO_DATA_FOUND);
 		}
 		Comparator<CSVStateCensus> comparator = Comparator
-				.comparing(csvStateCensus -> csvStateCensus.getPopulationDensity());
+				                                .comparing(csvStateCensus -> csvStateCensus.getPopulationDensity());
+		list.sort(comparator.reversed());
+	}
+
+	public void sortDataAreaWiseInDecendingOrder(List<CSVStateCensus> list) throws CensusAnalyserException {
+		if (list == null || list.size() == 0) {
+			throw new CensusAnalyserException("Census Data Not Found",
+											  CensusAnalyserException.ExceptionType.NO_DATA_FOUND);
+		}
+		Comparator<CSVStateCensus> comparator = Comparator
+				                                .comparing(csvStateCensus -> csvStateCensus.getAreaInSqKms());
 		list.sort(comparator.reversed());
 	}
 }
