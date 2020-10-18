@@ -12,6 +12,26 @@ public class CSVStateCensus {
 	private int population;
 	@CsvBindByName(column = "TIN", required = true)
 	private int tinNumber;
+	@CsvBindByName(column = "Area (sq km)", required = true)
+	private int areaInSqKms;
+	@CsvBindByName(column = "Population Density", required = true)
+	private int populationDensity;
+	
+	public int getPopulation() {
+		return population;
+	}
+
+	public int getTinNumber() {
+		return tinNumber;
+	}
+
+	public int getAreaInSqKms() {
+		return areaInSqKms;
+	}
+
+	public int getPopulationDensity() {
+		return populationDensity;
+	}
 
 	public String getState() {
 		return state;

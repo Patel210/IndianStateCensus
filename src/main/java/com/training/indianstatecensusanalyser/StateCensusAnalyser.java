@@ -55,9 +55,20 @@ public class StateCensusAnalyser {
 		return getListAsJsonString(censusDataList);
 	}
 	
-	private String getListAsJsonString(List list) {
+	public String getPopulationWiseSortedDataInDecendingOrder() throws CensusAnalyserException {
+		if(censusDataList == null || censusDataList.size() == 0) {
+			throw new CensusAnalyserException("Census Data Not Found", CensusAnalyserException.ExceptionType.NO_DATA_FOUND);
+		}
+		Comparator<CSVStateCensus> comparator = Comparator.comparing(csvStateCensus -> csvStateCensus.getPopulation());
+		censusDataList.sort(comparator.reversed());
+		String sortedCensusJsonString = getListAsJsonString(censusDataList);
+		new CensusAnalyserFileIOService().writeJSONFile("PopulationWiseSortedData", sortedCensusJsonString);
+		return sortedCensusJsonString;
+	}
+	
+	private <E> String getListAsJsonString(List<E> list) {
 		Gson gson = new Gson();
 		String sortedCensusJsonString = gson.toJson(list);
-		return sortedCensusJsonString;
+		return sortedCensusJsonString; 
 	}
 }
